@@ -19,6 +19,8 @@ class Word:
 
     def reveal_random_letter(self):
         not_shown_letters = self.__get_n_of_not_shown_letters()
+        if not_shown_letters == 1:
+            self.has_been_guessed_correctly = True
         if not_shown_letters <= 0:
             print("You cant show any more letters.")
             return False
@@ -48,7 +50,10 @@ class Word:
         return shown_entry
 
     def does_guess_match_entry(self, guess):
-        return self.__list_to_string(self.__entry) == guess.upper()
+        if self.__list_to_string(self.__entry) == guess.upper():
+            self.has_been_guessed_correctly = True
+            return True
+        return False
 
     def reveal_whole_entry(self):
         self.__shown_entry = self.__entry
