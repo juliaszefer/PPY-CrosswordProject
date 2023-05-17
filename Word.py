@@ -52,8 +52,8 @@ class Word:
     def does_guess_match_entry(self, guess):
         if self.__list_to_string(self.__entry) == guess.upper():
             self.has_been_guessed_correctly = True
-            return True
-        return False
+            return self.__get_n_of_not_shown_letters()
+        return 0
 
     def reveal_whole_entry(self):
         self.__shown_entry = self.__entry
