@@ -2,11 +2,12 @@ import random
 
 
 class Word:
-    def __init__(self, entry, clue):
+    def __init__(self, entry, clue, index):
         self.__entry = list(entry.upper())
         self.__shown_entry = list(self.__init_shown_entry())
         self.__clue = clue
         self.has_been_guessed_correctly = False
+        self.key_index = index
 
     def get_shown_entry_string(self):
         return self.__list_to_string(self.__shown_entry)
@@ -58,6 +59,10 @@ class Word:
 
     def reveal_whole_entry(self):
         self.__shown_entry = self.__entry
+
+    def get_sql_data(self, id_word, id_wordSet):
+        data = (id_word, self.__list_to_string(self.__entry), self.__clue, self.key_index, id_wordSet)
+        return data
 
     @staticmethod
     def __list_to_string(word_in_list):
