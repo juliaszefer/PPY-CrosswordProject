@@ -12,6 +12,7 @@ class Word:
         self.__entry = list(entry.upper())
         self.__shown_entry = list(self.__init_shown_entry())
         self.__clue = clue
+        self.key_index = index
         self.has_been_guessed_correctly = False
         self.key_index = index
         self.id_WordSet = id_WordSet
