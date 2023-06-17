@@ -132,6 +132,16 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
+    def does_user_exists_by_login(login):
+        con, cur = Database.get_connection_and_cursor()
+        dataDict = {"login": login}
+
+        res = cur.execute("SELECT * FROM User WHERE login = :login", dataDict)
+        data = res.fetchone()
+
+        return not (data is None)
+
+    @staticmethod
     def get_max_idUser():
         con, cur = Database.get_connection_and_cursor()
 
@@ -187,6 +197,7 @@ class Database:
         cur.execute("UPDATE UserSettings "
                     "SET id_Color_background = :bg, id_Color_outline = :ol, id_Color_font = :fn "
                     "WHERE id_User = :id", dataDict)
+        con.commit()
 
         Database.close_connection_and_cursor(con, cur)
 
