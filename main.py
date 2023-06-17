@@ -12,7 +12,6 @@ def main():
 
     Database.insert_User(user)
     Database.insert_UserSettings(user.userSettings)
-
     print(user)
 
 
