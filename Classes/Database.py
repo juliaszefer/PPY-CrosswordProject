@@ -10,6 +10,7 @@ class Database:
     def __init__(self, version):
         self.__create_path = f"{Database.sql_directory}create_{version}.sql"
         self.__drop_path = f"{Database.sql_directory}drop_{version}.sql"
+        self.__seed_path = f"{Database.sql_directory}seed_{version}.sql"
 
     def run_create(self):
         create_file = open(self.__create_path)
@@ -26,6 +27,11 @@ class Database:
         cur.executescript(drop_file.read())
 
         Database.close_connection_and_cursor(con, cur)
+
+    def run_seed(self):
+            con, cur = Database.get_connection_and_cursor()
+
+            cur.executescript(self.__seed_path)
 
     @staticmethod
     def get_connection_and_cursor():
@@ -132,6 +138,16 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
+    def does_user_exists_by_login(login):
+        con, cur = Database.get_connection_and_cursor()
+        dataDict = {"login": login}
+
+        res = cur.execute("SELECT * FROM User WHERE login = :login", dataDict)
+        data = res.fetchone()
+
+        return not (data is None)
+
+    @staticmethod
     def get_max_idUser():
         con, cur = Database.get_connection_and_cursor()
 
@@ -187,9 +203,6 @@ class Database:
         cur.execute("UPDATE UserSettings "
                     "SET id_Color_background = :bg, id_Color_outline = :ol, id_Color_font = :fn "
                     "WHERE id_User = :id", dataDict)
+        con.commit()
 
         Database.close_connection_and_cursor(con, cur)
-
-
-
-
