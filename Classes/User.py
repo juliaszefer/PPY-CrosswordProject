@@ -1,5 +1,6 @@
 from Classes.Database import Database
 from Classes.UserSettings import UserSettings
+import bcrypt
 
 
 class User:
@@ -10,7 +11,7 @@ class User:
             self.id_User = id_User
         self.userSettings = Database.get_UserSettings(self.id_User)
         self.login = login
-        self.password = password
+        self.password = bcrypt.hashpw(password, bcrypt.gensalt())
         self.points = points
         self.id_Level = id_Level
 

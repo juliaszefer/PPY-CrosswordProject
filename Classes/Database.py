@@ -1,6 +1,7 @@
 import sqlite3
 
 from Classes.UserSettings import UserSettings
+from Classes.User import User
 
 
 class Database:
@@ -46,7 +47,7 @@ class Database:
         con.close()
 
     @staticmethod
-    def insert_WordSet(wordSet):
+    def insert_wordset(wordSet):
         con, cur = Database.get_connection_and_cursor()
 
         data = wordSet.get_wordSet_sql_data()
@@ -67,17 +68,17 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def get_max_idWordSet():
+    def get_max_idwordset():
         con, cur = Database.get_connection_and_cursor()
 
         res = cur.execute("SELECT ifnull(max(id_WordSet), -1) from WordSet")
-        id_wordSet = int(res.fetchone()[0])
+        id_wordset = int(res.fetchone()[0])
 
         Database.close_connection_and_cursor(con, cur)
-        return id_wordSet
+        return id_wordset
 
     @staticmethod
-    def get_max_idWord():
+    def get_max_idword():
         con, cur = Database.get_connection_and_cursor()
 
         res = cur.execute("SELECT ifnull(max(id_Word), -1) from Word")
@@ -87,7 +88,7 @@ class Database:
         return id_word
 
     @staticmethod
-    def insert_CompletedWordSets(id_User, id_WordSet):
+    def insert_completedwordsets(id_User, id_WordSet):
         con, cur = Database.get_connection_and_cursor()
 
         data = (id_User, id_WordSet)
@@ -100,10 +101,10 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def insert_User_Prize(id_User, id_Prize):
+    def insert_user_prize(id_user, id_prize):
         con, cur = Database.get_connection_and_cursor()
 
-        data = (id_User, id_Prize)
+        data = (id_user, id_prize)
         try:
             cur.execute("INSERT INTO User_Prize (id_User, id_Prize) VALUES (?, ?)", data)
             con.commit()
@@ -113,19 +114,19 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def insert_Scores(id_User, id_GameType, points, date):
+    def insert_scores(id_user, id_gametype, points, date):
         con, cur = Database.get_connection_and_cursor()
 
         res = cur.execute("SELECT ifnull(max(id_Scores), -1) from Scores")
-        id_Scores = int(res.fetchone()[0]) + 1
-        data = (id_Scores, id_User, id_GameType, points, date)
+        id_scores = int(res.fetchone()[0]) + 1
+        data = (id_scores, id_user, id_gametype, points, date)
         cur.execute("INSERT INTO Scores VALUES (?, ?, ?, ?, ?)", data)
         con.commit()
 
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def insert_User(user):
+    def insert_user(user):
         con, cur = Database.get_connection_and_cursor()
 
         data = user.get_sql_data()
@@ -138,27 +139,47 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
+    def get_user(login):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"login": login}
+        res = cur.execute("SELECT password, points, id_User, id_Level FROM User WHERE login = :login", data_dict)
+        data = res.fetchone()
+
+        return User(login, data[0], data[2], data[1], data[3])
+
+    @staticmethod
     def does_user_exists_by_login(login):
         con, cur = Database.get_connection_and_cursor()
-        dataDict = {"login": login}
+        data_dict = {"login": login}
 
-        res = cur.execute("SELECT * FROM User WHERE login = :login", dataDict)
+        res = cur.execute("SELECT * FROM User WHERE login = :login", data_dict)
         data = res.fetchone()
 
         return not (data is None)
 
     @staticmethod
-    def get_max_idUser():
+    def get_user_password_by_login(login):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"login": login}
+        res = cur.execute("SELECT password FROM User WHERE login = :login", data_dict)
+        data = res.fetchone()
+
+        return data
+
+    @staticmethod
+    def get_max_iduser():
         con, cur = Database.get_connection_and_cursor()
 
         res = cur.execute("SELECT ifnull(max(id_User), -1) from User")
-        id_User = int(res.fetchone()[0])
+        id_user = int(res.fetchone()[0])
 
         Database.close_connection_and_cursor(con, cur)
-        return id_User
+        return id_user
 
     @staticmethod
-    def insert_UserSettings(userSettings):
+    def insert_usersettings(userSettings):
         con, cur = Database.get_connection_and_cursor()
 
         data = userSettings.get_sql_data()
@@ -171,12 +192,12 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def get_UserSettings(id_User):
+    def get_usersettings(id_User):
         con, cur = Database.get_connection_and_cursor()
-        dataDict = {"id": id_User}
+        datadict = {"id": id_User}
 
         res = cur.execute("SELECT id_Color_background, id_Color_outline, id_Color_font from UserSettings "
-                          "WHERE id_User = :id", dataDict)
+                          "WHERE id_User = :id", datadict)
 
         data = res.fetchone()
         if data is None:
@@ -189,10 +210,10 @@ class Database:
         return us
 
     @staticmethod
-    def update_UserSettings(userSettings):
+    def update_usersettings(usersettings):
         con, cur = Database.get_connection_and_cursor()
 
-        data = userSettings.get_sql_data()
+        data = usersettings.get_sql_data()
         dataDict = {
             "id": data[0],
             "bg": data[1],
