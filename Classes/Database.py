@@ -10,6 +10,7 @@ class Database:
     def __init__(self, version):
         self.__create_path = f"{Database.sql_directory}create_{version}.sql"
         self.__drop_path = f"{Database.sql_directory}drop_{version}.sql"
+        self.__seed_path = f"{Database.sql_directory}seed_{version}.sql"
 
     def run_create(self):
         create_file = open(self.__create_path)
@@ -26,6 +27,11 @@ class Database:
         cur.executescript(drop_file.read())
 
         Database.close_connection_and_cursor(con, cur)
+
+    def run_seed(self):
+            con, cur = Database.get_connection_and_cursor()
+
+            cur.executescript(self.__seed_path)
 
     @staticmethod
     def get_connection_and_cursor():
@@ -200,7 +206,3 @@ class Database:
         con.commit()
 
         Database.close_connection_and_cursor(con, cur)
-
-
-
-
