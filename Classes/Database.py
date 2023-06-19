@@ -1,7 +1,6 @@
 import sqlite3
 
 from Classes.UserSettings import UserSettings
-from Classes.User import User
 
 
 class Database:
@@ -30,9 +29,16 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     def run_seed(self):
-            con, cur = Database.get_connection_and_cursor()
+        seed_file = open((self.__seed_path))
+        con, cur = Database.get_connection_and_cursor()
 
-            cur.executescript(self.__seed_path)
+        cur.executescript(seed_file.read())
+
+        Database.close_connection_and_cursor(con, cur)
+
+
+
+
 
     @staticmethod
     def get_connection_and_cursor():
@@ -139,14 +145,14 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def get_user(login):
+    def get_user_data(login):
         con, cur = Database.get_connection_and_cursor()
 
         data_dict = {"login": login}
         res = cur.execute("SELECT password, points, id_User, id_Level FROM User WHERE login = :login", data_dict)
         data = res.fetchone()
 
-        return User(login, data[0], data[2], data[1], data[3])
+        return data
 
     @staticmethod
     def does_user_exists_by_login(login):

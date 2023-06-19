@@ -5,7 +5,7 @@ VALUES (1, 'white'),
 insert into GameType
 VALUES (0, 'Normal SP', 'Single player, normal game mode.'),
        (1, 'Time SP', 'Single player, time based game mode.'),
-       (1, 'One mistake SP', 'Single player, one mistake game mode.');
+       (2, 'One mistake SP', 'Single player, one mistake game mode.');
 
 
 insert into Level
