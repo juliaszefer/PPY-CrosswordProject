@@ -36,10 +36,6 @@ class Database:
 
         Database.close_connection_and_cursor(con, cur)
 
-
-
-
-
     @staticmethod
     def get_connection_and_cursor():
         con = sqlite3.connect(Database.database_file)
@@ -145,7 +141,7 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     @staticmethod
-    def get_user_data(login):
+    def get_user(login):
         con, cur = Database.get_connection_and_cursor()
 
         data_dict = {"login": login}

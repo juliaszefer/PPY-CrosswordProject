@@ -1,5 +1,4 @@
 from Classes.Database import Database
-from Classes.UserSettings import UserSettings
 import bcrypt
 
 
