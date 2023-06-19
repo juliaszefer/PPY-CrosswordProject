@@ -166,7 +166,7 @@ class Database:
 
         data_dict = {"login": login}
         res = cur.execute("SELECT password FROM User WHERE login = :login", data_dict)
-        data = res.fetchone()
+        data = res.fetchone()[0]
 
         return data
 

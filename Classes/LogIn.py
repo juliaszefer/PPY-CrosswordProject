@@ -17,6 +17,7 @@ class LogIn:
         if Database.does_user_exists_by_login(login):
             _password = Database.get_user_password_by_login(login)
             password = bcrypt.hashpw(password.encode("utf-8"), _password[0:29].encode("utf-8")).decode("utf-8")
+
             if password == _password:
                 user = Database.get_user(login)
                 user = User(login, user[0], user[2], user[1], user[3])
