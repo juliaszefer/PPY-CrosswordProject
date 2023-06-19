@@ -29,7 +29,7 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
     def run_seed(self):
-        seed_file = open((self.__seed_path))
+        seed_file = open(self.__seed_path)
         con, cur = Database.get_connection_and_cursor()
 
         cur.executescript(seed_file.read())
