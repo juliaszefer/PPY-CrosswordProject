@@ -11,9 +11,10 @@ class LoginWindow:
 
 
 def button_on_click(login_value, password_value):
-    if "wrong login" == LogIn.login_logic(login_value, password_value):
+    answer = LogIn.login_logic(login_value, password_value)
+    if "wrong login" == answer:
         messagebox.showerror("wrong login", "Login does not exists in database")
-    elif "wrong password" == LogIn.login_logic(login_value, password_value):
+    elif "wrong password" == answer:
         messagebox.showerror("wrong password", "You have entered a wrong password")
 
 
@@ -27,7 +28,7 @@ def login_set(self):
     label_password.pack()
     input_password = tkinter.Entry(self.window, show="*")
     input_password.pack()
-    button = tkinter.Button(self.window, text="Log in", command=button_on_click(input_login.get(),
-                                                                                input_password.get()))
+    button = tkinter.Button(self.window, text="Log In",
+                            command=lambda: button_on_click(input_login.get(), input_password.get()))
     button.pack()
     self.window.mainloop()

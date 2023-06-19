@@ -58,7 +58,7 @@ CREATE TABLE Scores (
 CREATE TABLE User (
     id_User integer NOT NULL CONSTRAINT User_pk PRIMARY KEY,
     login varchar(50) NOT NULL,
-    password varchar(50) NOT NULL,
+    password varchar(100) NOT NULL,
     points integer NOT NULL,
     id_Level integer NOT NULL,
     CONSTRAINT User_Level FOREIGN KEY (id_Level)

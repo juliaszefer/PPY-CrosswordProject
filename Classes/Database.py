@@ -5,7 +5,7 @@ from Classes.UserSettings import UserSettings
 
 class Database:
     sql_directory = "Database_Sql_files/"
-    database_file = "./Database/database"
+    database_file = "../Database/database"
 
     def __init__(self, version):
         self.__create_path = f"{Database.sql_directory}create_{version}.sql"

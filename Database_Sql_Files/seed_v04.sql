@@ -20,9 +20,9 @@ values
 
 insert into User
 values
-    (0, 'Guest', 'Password', 0, 0),
-    (1, 'iMeReJ', 's24914tak', 100, 3),
-    (2, 'SzefJulia', '420Top_Secret69', 750, 5);
+    (0, 'Guest', '$2b$12$Fcz1ELL6m3wdme4s2Z7G1Oh6KbToivk2taXWnM82rjRfZ9ZRuEoli', 0, 0),         --Password
+    (1, 'iMeReJ', '$2b$12$Y6dAGQIXi8cypOHusBPqZenpRedm2KGbcgblzguyS9j.7hbh9i.7C', 100, 3),      --s24914tak
+    (2, 'SzefJulia', '$2b$12$NxleEzHE3L6dczQoXouCd.4gE/fQZuenHXHgYOyAwFuj3A.QB5VUy', 750, 5);   --420Top_Secret69
 
 insert into Prize
 values (0, 0, 'Create an account.'),
