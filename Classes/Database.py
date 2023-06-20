@@ -180,6 +180,31 @@ class Database:
         return data
 
     @staticmethod
+    def get_all_users_points():
+        con, cur = Database.get_connection_and_cursor()
+
+        cur.execute("SELECT login, points FROM User")
+        rows = cur.fetchall()
+
+        user_points = [[row[0], row[1]] for row in rows]
+
+        return user_points
+
+    @staticmethod
+    def get_all_prizes_by_login(login):
+
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"login": login}
+        cur.execute("SELECT min_points, description FROM User U "
+                    "JOIN User_Prize UP on U.id_User = UP.id_User "
+                    "JOIN Prize P on UP.id_Prize = P.id_Prize WHERE U.login = :login", data_dict)
+        rows = cur.fetchall()
+
+        prizes = [[row[0], row[1]] for row in rows]
+        return prizes
+
+    @staticmethod
     def get_max_iduser():
         con, cur = Database.get_connection_and_cursor()
 
