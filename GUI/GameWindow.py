@@ -8,12 +8,18 @@ from Classes.Level import Level
 class GameWindow:
     def __init__(self, user):
         self.window = tkinter.Tk()
+        window_height = 600
+        window_width = 800
+        screen_width = self.window.winfo_width()
+        screen_height = self.window.winfo_height()
+        x_coordinate = int((screen_width / 2) + (window_width / 2))
+        y_coordinate = int((screen_height / 2) + (window_height / 2))
+        self.window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_coordinate, y_coordinate))
         self.user = user
         self.set_window()
 
     def set_window(self):
         self.window.title(f'{self.user.login} view')
-        self.window.geometry("800x600")
         user_level = self.get_level()
         min_points_label = tkinter.Label(self.window, text=f"  {user_level.min_points}   ")
         min_points_label.grid(row=0, column=0, pady=10)

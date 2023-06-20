@@ -8,6 +8,13 @@ class LoginWindow:
 
     def __init__(self, welcome):
         self.window = tkinter.Tk()
+        window_height = 180
+        window_width = 200
+        screen_width = self.window.winfo_width()
+        screen_height = self.window.winfo_height()
+        x_coordinate = int((screen_width / 2) + (window_width * 2) + 195)
+        y_coordinate = int((screen_height / 2) + (window_height / 2) + 200)
+        self.window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_coordinate, y_coordinate))
         self.welcome = welcome
         self.login_set()
 

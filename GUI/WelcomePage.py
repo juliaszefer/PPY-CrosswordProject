@@ -11,7 +11,13 @@ class WelcomePage:
 
         self.window = tk.Tk()
         self.window.title("CROSSWORD")
-        self.window.geometry("400x400")
+        window_height = 400
+        window_width = 400
+        screen_width = self.window.winfo_width()
+        screen_height = self.window.winfo_height()
+        x_coordinate = int((screen_width / 2) + window_width)
+        y_coordinate = int((screen_height / 2) + (window_height/2)-70)
+        self.window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_coordinate, y_coordinate))
 
         self.canvas = tk.Canvas(self.window, width=400, height=100)
         self.canvas.pack()
