@@ -28,7 +28,8 @@ class LogIn:
             return "wrong login"
 
     @staticmethod
-    def register_login(login, password):
+    def register_logic(login, password):
+        # password_salt = bcrypt.hashpw(password, bcrypt.gensalt())[0:29]
         if Database.does_user_exists_by_login(login):
             return "login already exists"
         password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"

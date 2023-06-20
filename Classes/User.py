@@ -10,7 +10,7 @@ class User:
             self.id_User = id_User
         self.userSettings = Database.get_usersettings(self.id_User)
         self.login = login
-        self.password = bcrypt.hashpw(password.encode("UTF-8"), password[0:29].encode("UTF-8")).decode("UTF-8")
+        self.password = bcrypt.hashpw(password.encode('utf-8'), b'$2b$12$CX01WWJ7/wm76.TyUIWU0.').decode('utf-8')
         self.points = points
         self.id_Level = id_Level
 

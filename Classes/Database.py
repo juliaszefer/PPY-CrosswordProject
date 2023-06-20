@@ -4,7 +4,7 @@ from Classes.UserSettings import UserSettings
 
 
 class Database:
-    sql_directory = "Database_Sql_files/"
+    sql_directory = "../Database_Sql_files/"
     database_file = "../Database/database"
 
     def __init__(self, version):
@@ -47,6 +47,15 @@ class Database:
     def close_connection_and_cursor(con, cur):
         cur.close()
         con.close()
+
+    @staticmethod
+    def get_level_by_id(id_level):
+        con, cur = Database.get_connection_and_cursor()
+
+        res = cur.execute(f"SELECT * FROM Level WHERE id_Level={id_level}")
+        data = res.fetchone()
+
+        return data
 
     @staticmethod
     def insert_wordset(wordSet):
