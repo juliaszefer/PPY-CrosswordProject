@@ -28,6 +28,12 @@ class WelcomePage:
         self.register_button = tk.Button(self.window, text="Register", command=self.on_register_button)
         self.register_button.pack()
 
+        self.note_label = tk.Label(self.window,
+                                   text='If you want to play as a guest,')
+        self.note_label.pack(ipady=10)
+        self.second_note = tk.Label(self.window, text='please use login: Guest, password: Password')
+        self.second_note.pack()
+
         self.x = 20
         self.y = 70
         self.velocity = self.step
