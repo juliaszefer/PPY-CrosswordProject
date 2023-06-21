@@ -4,9 +4,9 @@ from Classes.Database import Database
 
 
 class Word:
-    def __init__(self, entry, clue, index, id_WordSet, id_Word=-1):
+    def __init__(self, entry, clue, index, id_WordSet=-1, id_Word=-1):
         if id_Word == -1:
-            self.id_Word = Database.get_max_idWord() + 1
+            self.id_Word = Database.get_max_idword() + 1
         else:
             self.id_Word = id_Word
         self.__entry = list(entry.upper())
@@ -14,8 +14,10 @@ class Word:
         self.__clue = clue
         self.key_index = index
         self.has_been_guessed_correctly = False
-        self.key_index = index
-        self.id_WordSet = id_WordSet
+        if id_WordSet == -1:
+            self.id_WordSet = Database.get_max_idwordset()+1
+        else:
+            self.id_WordSet = id_WordSet
 
     def get_shown_entry_string(self):
         return self.__list_to_string(self.__shown_entry)

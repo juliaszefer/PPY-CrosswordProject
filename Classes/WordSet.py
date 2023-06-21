@@ -6,7 +6,7 @@ from Classes.Database import Database
 class WordSet:
     def __init__(self, words, main_answer, theme, id_WordSet=-1, id_User=None):
         if id_WordSet == -1:
-            self.id_WordSet = Database.get_max_idWordSet() + 1
+            self.id_WordSet = Database.get_max_idwordset() + 1
         else:
             self.id_WordSet = id_WordSet
         self.words = words
