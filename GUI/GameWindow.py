@@ -16,7 +16,7 @@ def open_leaderboard():
 class GameWindow:
     def __init__(self, user):
         self.window = tkinter.Tk()
-        window_height = 600
+        window_height = 200
         window_width = 800
         screen_width = self.window.winfo_width()
         screen_height = self.window.winfo_height()
