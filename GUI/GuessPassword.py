@@ -4,9 +4,8 @@ from Classes.Database import Database
 
 
 class GuessPassword:
-    def __init__(self, password, guess, points, user, wrong_guesses, welcome):
+    def __init__(self, password, points, user, wrong_guesses, welcome):
         self.password = password
-        self.guess = guess
         self.points = points
         self.user = user
         self.welcome = welcome
@@ -15,8 +14,8 @@ class GuessPassword:
         self.window.title("Guess password")
         self.set_window()
 
-    def check_password(self):
-        if self.guess != self.password:
+    def check_password(self, guess):
+        if guess != self.password:
             messagebox.showinfo("Wrong guess", "Try again")
             self.window.destroy()
         else:
@@ -35,6 +34,6 @@ class GuessPassword:
         guess_label.pack()
         guess_input = tkinter.Entry(self.window)
         guess_input.pack()
-        ok_button = tkinter.Button(self.window, text="OK", command=self.check_password)
+        ok_button = tkinter.Button(self.window, text="OK", command=lambda: self.check_password(guess_input.get()))
         ok_button.pack()
 

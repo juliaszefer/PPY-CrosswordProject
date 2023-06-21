@@ -17,7 +17,7 @@ class ChooseWordSet:
     def button_on_click(self, id_word_set):
         regex = '^[0-9]+$'
         id_word_set_int = int(id_word_set)
-        if id_word_set_int >= len(self.word_set_list) or id_word_set_int < 0 or re.match(regex, id_word_set) is None:
+        if id_word_set_int > Database.get_max_idwordset() or id_word_set_int < 0 or re.match(regex, id_word_set) is None:
             messagebox.showerror("Wrong id", "The id you passed is incorrect")
         else:
             self.window.destroy()

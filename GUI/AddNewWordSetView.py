@@ -2,12 +2,7 @@ import tkinter
 import re
 from tkinter import messagebox
 from Classes.Word import Word
-from Classes.WordSet import WordSet
-from Classes.Database import Database
-
-
-def close_window(window):
-    window.destroy()
+from GUI.AddWordSet import AddWordSet
 
 
 class AddNewWordSetView:
@@ -36,6 +31,8 @@ class AddNewWordSetView:
             value_int = int(self.value)
             if self.counter - 1 != value_int:
                 self.show_input()
+            else:
+                AddWordSet(self.word_list, self.user)
 
     def show_input(self):
         new_window = tkinter.Tk()
@@ -59,30 +56,6 @@ class AddNewWordSetView:
                                        command=lambda: self.check_input(idx_input.get(),
                                                                         word_input.get(), clue_input.get(), new_window))
         submit_button.pack()
-        new_window.mainloop()
-
-    def insert_word_set(self, main_password, main_theme, window):
-        word_set = WordSet(self.word_list, main_password, main_theme, self.user.id_User)
-        Database.insert_wordset(word_set)
-        label = tkinter.Label(window, text="Word Set added")
-        label.pack()
-        button = tkinter.Button(window, text="OK", command=lambda: close_window(window))
-        button.pack()
 
     def set_window(self):
         self.show_input()
-        window = tkinter.Tk()
-        window.title('New Word Set')
-        main_password_label = tkinter.Label(window, text="Insert main password")
-        main_password_label.pack()
-        main_password_input = tkinter.Entry(window)
-        main_password_input.pack()
-        main_theme_label = tkinter.Label(window, text="Insert crossword theme")
-        main_theme_label.pack()
-        main_theme_input = tkinter.Entry(window)
-        main_theme_input.pack()
-        accept_button = tkinter.Button(window, text="OK",
-                                       command=lambda: self.insert_word_set(main_password_input.get(),
-                                                                            main_theme_input.get(), window))
-        accept_button.pack()
-        window.mainloop()

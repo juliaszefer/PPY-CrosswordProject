@@ -16,8 +16,8 @@ class Game:
         for wrd in word:
             wrdd = Word(wrd[0], wrd[1], wrd[2])
             self.words.append(wrdd)
-        self.wordset = WordSet(self.words, wordset_data[1], wordset_data[2])
         self.user = user
+        self.wordset = WordSet(self.words, wordset_data[1], wordset_data[2], id_wordset, self.user.id_User)
         self.mode = mode
         self.wrong_guesses = 0
         self.game_points = 0
@@ -126,8 +126,8 @@ class Game:
         header_label.pack()
         self.configure_window()
 
-    def guess_password(self, value):
-        GuessPassword(self.wordset.main_answer, value, self.game_points, self.user, self.wrong_guesses, self.window)
+    def guess_password(self):
+        GuessPassword(self.wordset.main_answer, self.game_points, self.user, self.wrong_guesses, self.window)
 
     def end_game(self):
         messagebox.showinfo("The End", f"You have earned {self.game_points} points.")

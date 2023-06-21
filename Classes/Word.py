@@ -76,7 +76,7 @@ class Word:
         self.shown_entry = self.entry
 
     def get_sql_data(self):
-        data = (self.id_Word, self.__list_to_string(self.entry), self.clue, self.key_index, self.id_WordSet)
+        data = (self.id_Word, self.entry, self.clue, self.key_index, self.id_WordSet)
         return data
 
     @staticmethod
