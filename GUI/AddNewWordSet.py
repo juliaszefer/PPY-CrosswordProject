@@ -5,9 +5,10 @@ from GUI.AddNewWordSetView import AddNewWordSetView
 
 
 class AddNewWordSet:
-    def __init__(self):
+    def __init__(self, user):
         self.window = tkinter.Tk()
         self.window.title("New Word Set")
+        self.user = user
         self.set_add_new_word_set()
 
     def ok_button_check_value(self, value):
@@ -16,7 +17,7 @@ class AddNewWordSet:
             messagebox.showerror("wrong input", "The value you passed is not a number")
         else:
             self.window.destroy()
-            AddNewWordSetView(value)
+            AddNewWordSetView(value, self.user)
 
     def set_add_new_word_set(self):
         how_many_label = tkinter.Label(self.window, text='How many words will there be in your crossword?')
@@ -26,4 +27,4 @@ class AddNewWordSet:
         ok_button = tkinter.Button(self.window, text='OK',
                                    command=lambda: self.ok_button_check_value(answer_input.get()))
         ok_button.pack()
-
+        self.window.mainloop()

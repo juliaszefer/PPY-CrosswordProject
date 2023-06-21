@@ -180,6 +180,19 @@ class Database:
         return data
 
     @staticmethod
+    def get_all_wordsets(id_user):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_user": id_user}
+        cur.execute("SELECT id_wordset, theme FROM WordSet WHERE id_User IS NULL OR id_User = :id_user", data_dict)
+        rows = cur.fetchall()
+
+        wordsets = [[row[0], row[1]] for row in rows]
+
+        return wordsets
+
+
+    @staticmethod
     def get_all_users_points():
         con, cur = Database.get_connection_and_cursor()
 

@@ -1,4 +1,5 @@
 import tkinter
+import re
 from tkinter import messagebox
 from Classes.Word import Word
 from Classes.WordSet import WordSet
@@ -10,27 +11,30 @@ def close_window(window):
 
 
 class AddNewWordSetView:
-    def __init__(self, value):
+    def __init__(self, value, user):
         self.value = value
         self.counter = 1
         self.word_list = list()
+        self.user = user
         self.set_window()
 
     def check_input(self, index, word, clue, new_window):
         counter = 0
+        regex = '^[0-9]+$'
+        index_int = int(index)
         tmp_list = list(word)
-        print('hej')
         for i in range(len(tmp_list)):
-            if index == f'{i}':
+            if index_int == i:
                 counter += 1
-        if counter == 0:
+        if counter == 0 or re.match(regex, index) is None:
             messagebox.showerror("Wrong Index", "The index you passed is out of bounds")
         else:
             word_to_add = Word(word, clue, index)
             self.word_list.append(word_to_add)
             messagebox.showinfo("Success", "Word has been added")
             new_window.destroy()
-            if self.counter - 1 != int(self.value):
+            value_int = int(self.value)
+            if self.counter - 1 != value_int:
                 self.show_input()
 
     def show_input(self):
@@ -55,9 +59,10 @@ class AddNewWordSetView:
                                        command=lambda: self.check_input(idx_input.get(),
                                                                         word_input.get(), clue_input.get(), new_window))
         submit_button.pack()
+        new_window.mainloop()
 
     def insert_word_set(self, main_password, main_theme, window):
-        word_set = WordSet(self.word_list, main_password, main_theme)
+        word_set = WordSet(self.word_list, main_password, main_theme, self.user.id_User)
         Database.insert_wordset(word_set)
         label = tkinter.Label(window, text="Word Set added")
         label.pack()
@@ -80,3 +85,4 @@ class AddNewWordSetView:
                                        command=lambda: self.insert_word_set(main_password_input.get(),
                                                                             main_theme_input.get(), window))
         accept_button.pack()
+        window.mainloop()
