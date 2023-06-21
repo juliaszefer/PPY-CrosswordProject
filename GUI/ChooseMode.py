@@ -6,8 +6,12 @@ class ChooseMode:
     def __init__(self, id_wordset, user):
         self.id_wordset = id_wordset
         self.window = tkinter.Tk()
+        height = 150
+        width = 200
+        self.window.geometry(f'{width}x{height}')
         self.window.title("Choose Mode")
         self.user = user
+        self.set_window()
 
     def set_window(self):
         label = tkinter.Label(self.window, text="Choose mode")
