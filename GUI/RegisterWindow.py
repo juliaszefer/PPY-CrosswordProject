@@ -35,6 +35,7 @@ class RegisterWindow:
         button_login = tkinter.Button(self.window, text="Register",
                                       command=lambda: self.button_on_click(input_login.get(), input_password.get(), input_password_repeat.get()))
         button_login.pack()
+        self.window.mainloop()
 
     def button_on_click(self, login, password, repeat_password):
         answer = LogIn.register_logic(login, password)

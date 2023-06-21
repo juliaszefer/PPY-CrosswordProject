@@ -156,6 +156,7 @@ class Database:
         data_dict = {"login": login}
         res = cur.execute("SELECT password, points, id_User, id_Level FROM User WHERE login = :login", data_dict)
         data = res.fetchone()
+        Database.close_connection_and_cursor(con, cur)
 
         return data
 
@@ -166,6 +167,7 @@ class Database:
 
         res = cur.execute("SELECT * FROM User WHERE login = :login", data_dict)
         data = res.fetchone()
+        Database.close_connection_and_cursor(con, cur)
 
         return not (data is None)
 
@@ -176,8 +178,46 @@ class Database:
         data_dict = {"login": login}
         res = cur.execute("SELECT password FROM User WHERE login = :login", data_dict)
         data = res.fetchone()[0]
+        Database.close_connection_and_cursor(con, cur)
 
         return data
+
+    @staticmethod
+    def get_all_wordsets(id_user):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_user": id_user}
+        cur.execute("SELECT id_WordSet, theme FROM WordSet WHERE id_User IS NULL OR id_User = :id_user", data_dict)
+        rows = cur.fetchall()
+
+        wordsets = [[row[0], row[1]] for row in rows]
+        Database.close_connection_and_cursor(con, cur)
+
+        return wordsets
+
+    @staticmethod
+    def get_wordset_by_id(id_wordset):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_wordset": id_wordset}
+        res = cur.execute("SELECT * FROM WordSet WHERE id_WordSet = :id_wordset", data_dict)
+        data = res.fetchone()
+        Database.close_connection_and_cursor(con, cur)
+
+        return data
+
+    @staticmethod
+    def get_words_from_wordset_by_id(id_wordset):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_wordset": id_wordset}
+        cur.execute("SELECT entry, clue, key_index FROM Word WHERE id_WordSet = :id_wordset", data_dict)
+        rows = cur.fetchall()
+
+        words = [[row[0], row[1], row[2]] for row in rows]
+        Database.close_connection_and_cursor(con, cur)
+
+        return words
 
     @staticmethod
     def get_all_users_points():
@@ -187,8 +227,20 @@ class Database:
         rows = cur.fetchall()
 
         user_points = [[row[0], row[1]] for row in rows]
+        Database.close_connection_and_cursor(con, cur)
 
         return user_points
+
+    @staticmethod
+    def update_user_points_by_id(id_user, points):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_user": id_user, "points": points}
+        cur.execute("UPDATE User SET points = :points WHERE id_User = :id_user", data_dict)
+        con.commit()
+
+        Database.close_connection_and_cursor(con, cur)
+
 
     @staticmethod
     def get_all_prizes_by_login(login):
@@ -202,6 +254,8 @@ class Database:
         rows = cur.fetchall()
 
         prizes = [[row[0], row[1]] for row in rows]
+        Database.close_connection_and_cursor(con, cur)
+
         return prizes
 
     @staticmethod

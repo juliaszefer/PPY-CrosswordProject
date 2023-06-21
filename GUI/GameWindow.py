@@ -5,6 +5,8 @@ from Classes.Database import Database
 from Classes.Level import Level
 from GUI.Leaderboard import Leaderboard
 from GUI.PrizesView import PrizesView
+from GUI.AddNewWordSet import AddNewWordSet
+from GUI.ChooseWordSet import ChooseWordSet
 
 
 def open_leaderboard():
@@ -14,7 +16,7 @@ def open_leaderboard():
 class GameWindow:
     def __init__(self, user):
         self.window = tkinter.Tk()
-        window_height = 600
+        window_height = 200
         window_width = 800
         screen_width = self.window.winfo_width()
         screen_height = self.window.winfo_height()
@@ -38,10 +40,10 @@ class GameWindow:
         level_name.grid(row=0, column=3, pady=10)
         welcome_label = tkinter.Label(self.window, text=f'\tWelcome {self.user.login}!')
         welcome_label.grid(row=0, column=4, pady=10)
-        play_button = tkinter.Button(self.window, text='Play')
+        play_button = tkinter.Button(self.window, text='Play', command=self.open_choose_word_set)
         play_button.grid(row=2, column=2)
         if self.user.login != 'Guest':
-            add_button = tkinter.Button(self.window, text='New word set')
+            add_button = tkinter.Button(self.window, text='New word set', command=self.open_add_new_word_set_view)
             add_button.grid(row=3, column=2)
             prizes_button = tkinter.Button(self.window, text='Show prizes', command=self.open_prizes_view)
             prizes_button.grid(row=4, column=2)
@@ -49,6 +51,7 @@ class GameWindow:
         leaderboard_button.grid(row=5, column=2)
         log_out_button = tkinter.Button(self.window, text='Log out', command=self.logout)
         log_out_button.grid(row=7, column=2)
+        self.window.mainloop()
 
     def get_level(self):
         data = Database.get_level_by_id(self.user.id_Level)
@@ -61,3 +64,8 @@ class GameWindow:
     def open_prizes_view(self):
         PrizesView(self.user.login)
 
+    def open_add_new_word_set_view(self):
+        AddNewWordSet(self.user)
+
+    def open_choose_word_set(self):
+        ChooseWordSet(self.user)
