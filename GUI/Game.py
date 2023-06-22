@@ -154,7 +154,7 @@ class Game:
         if self.game_points < 20:
             messagebox.showinfo("Can't buy hint", "You don't have enough (20) points to buy a hint")
         else:
-            random_column = random.randint(0, len(self.words[row_value].entry))
+            random_column = random.randint(0, len(self.words[row_value].entry) - 1)
             letter_list = list(self.words[row_value].entry)
             hint_letter = letter_list[random_column]
             hint_label = tkinter.Label(self.canvas, text=f"[ {hint_letter} ]")
