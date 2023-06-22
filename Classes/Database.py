@@ -172,6 +172,31 @@ class Database:
         return not (data is None)
 
     @staticmethod
+    def update_user_level(id_user):
+        con, cur = Database.get_connection_and_cursor()
+        data_dict = {"id_user": id_user}
+
+        resp_points = cur.execute("SELECT points from User where id_User = :id_user", data_dict)
+        data_points = resp_points.fetchone()[0]
+
+        points_data_dict = {"data_points": data_points}
+
+        res = cur.execute("SELECT MAX(id_Level) FROM Level "
+                          "WHERE min_points <= :data_points "
+                          "AND max_points > :data_points", points_data_dict)
+        data_response = res.fetchone()[0]
+        if data_response is None:
+            resp_new_id = cur.execute("SELECT MAX(id_Level) FROM Level")
+            data_new_id = resp_new_id.fetchone()[0]
+            data_response = data_new_id
+
+        up_data_dict = {"data_response": data_response, "id_user": id_user}
+        cur.execute("UPDATE User SET id_Level = :data_response WHERE id_User = :id_user", up_data_dict)
+        con.commit()
+
+        Database.close_connection_and_cursor(con, cur)
+
+    @staticmethod
     def get_user_password_by_login(login):
         con, cur = Database.get_connection_and_cursor()
 
@@ -179,6 +204,28 @@ class Database:
         res = cur.execute("SELECT password FROM User WHERE login = :login", data_dict)
         data = res.fetchone()[0]
         Database.close_connection_and_cursor(con, cur)
+
+        return data
+
+    @staticmethod
+    def get_all_colors():
+        con, cur = Database.get_connection_and_cursor()
+
+        cur.execute("SELECT * FROM Color")
+        rows = cur.fetchall()
+
+        colors = [[row[0], row[1]] for row in rows]
+        Database.close_connection_and_cursor(con, cur)
+
+        return colors
+
+    @staticmethod
+    def get_color_by_id(id_color):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_color": id_color}
+        res = cur.execute("SELECT name FROM Color WHERE id_Color = :id_color", data_dict)
+        data = res.fetchone()[0]
 
         return data
 
@@ -241,7 +288,6 @@ class Database:
 
         Database.close_connection_and_cursor(con, cur)
 
-
     @staticmethod
     def get_all_prizes_by_login(login):
 
@@ -257,6 +303,29 @@ class Database:
         Database.close_connection_and_cursor(con, cur)
 
         return prizes
+
+    @staticmethod
+    def get_all_prizes():
+        con, cur = Database.get_connection_and_cursor()
+
+        cur.execute("SELECT id_Prize, min_points FROM Prize")
+        rows = cur.fetchall()
+
+        prizes = [[row[0], row[1]] for row in rows]
+        Database.close_connection_and_cursor(con, cur)
+
+        return prizes
+
+    @staticmethod
+    def does_user_prize_exist(id_user, id_prize):
+        con, cur = Database.get_connection_and_cursor()
+
+        data_dict = {"id_user": id_user, "id_prize": id_prize}
+        res = cur.execute("SELECT 1 FROM User_Prize WHERE id_User = :id_user and id_Prize = :id_prize", data_dict)
+        data = res.fetchone()
+
+        Database.close_connection_and_cursor(con, cur)
+        return not (data is None)
 
     @staticmethod
     def get_max_iduser():
@@ -293,6 +362,11 @@ class Database:
         if data is None:
             print("No settings for this User in the Database, created a new set.")
             us = UserSettings(id_User)
+
+            data_dict = {"id_user": us.id_User, "bg": us.id_Color_bg, "ol": us.id_Color_outline, "ft": us.id_Color_font}
+            cur.execute("INSERT INTO UserSettings VALUES (:id_user, :bg, :ol, :ft)", data_dict)
+            print("New userSettings set")
+            con.commit()
         else:
             us = UserSettings(id_User, id_Color_bg=data[0], id_Color_outline=data[1], id_Color_font=data[2])
 

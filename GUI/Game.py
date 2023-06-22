@@ -5,6 +5,7 @@ from Classes.Database import Database
 from Classes.WordSet import WordSet
 from Classes.Word import Word
 from GUI.GuessPassword import GuessPassword
+from GUI.ChangeBackground import ChangeBackground
 
 
 class Game:
@@ -22,9 +23,11 @@ class Game:
         self.wrong_guesses = 0
         self.game_points = 0
         self.seconds = 60
+        self.user_settings = Database.get_usersettings(self.user.id_User)
         self.window = tkinter.Tk()
         self.window.title("Crossword")
         self.canvas = tkinter.Canvas(self.window)
+        self.canvas.config(bg=Database.get_color_by_id(self.user_settings.id_Color_bg))
         max_lenght_left = max(word.key_index for word in self.words) + 1
         max_lenght_right = max(len(word.entry) for word in self.words) - min(word.key_index for word in self.words) - 1
         self.grid_size = max_lenght_right + max_lenght_left + 1
@@ -102,6 +105,12 @@ class Game:
         button_password.pack()
         hint_button = tkinter.Button(self.window, text="Hint", command=self.get_hint_new_window)
         hint_button.pack()
+        button_change_background = tkinter.Button(self.window, text="Change background color",
+                                                  command=self.change_background)
+        button_change_background.pack()
+
+    def change_background(self):
+        ChangeBackground(self.user, self.canvas)
 
     def standard(self):
         header_label = tkinter.Label(self.window, text="Standard mode", font=("Arial", 25))
