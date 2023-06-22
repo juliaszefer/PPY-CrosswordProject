@@ -1,6 +1,7 @@
 insert into Color
 VALUES (1, 'white'),
-       (2, 'black');
+       (2, 'grey'),
+       (3, 'black');
 
 insert into GameType
 VALUES (0, 'Normal SP', 'Single player, normal game mode.'),

@@ -21,6 +21,7 @@ class LogIn:
             if password == _password:
                 user = Database.get_user(login)
                 user = User(login, user[0], user[2], user[1], user[3])
+                user_set = Database.get_usersettings(user.id_User)
                 return user
             else:
                 return "wrong password"

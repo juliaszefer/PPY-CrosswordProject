@@ -7,6 +7,7 @@ from GUI.Leaderboard import Leaderboard
 from GUI.PrizesView import PrizesView
 from GUI.AddNewWordSet import AddNewWordSet
 from GUI.ChooseWordSet import ChooseWordSet
+from Classes.User import User
 
 
 def open_leaderboard():
@@ -14,32 +15,30 @@ def open_leaderboard():
 
 
 class GameWindow:
-    def __init__(self, user):
+    def __init__(self, tmp_user):
         self.window = tkinter.Tk()
-        window_height = 200
-        window_width = 800
-        screen_width = self.window.winfo_width()
-        screen_height = self.window.winfo_height()
-        x_coordinate = int((screen_width / 2) + (window_width / 2))
-        y_coordinate = int((screen_height / 2) + (window_height / 2))
-        self.window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_coordinate, y_coordinate))
-        self.user = user
+        self.tmp_user = tmp_user
+        Database.update_user_level(self.tmp_user.id_User)
+        user_data = Database.get_user(self.tmp_user.login)
+        self.user = User(self.tmp_user.login, user_data[0], user_data[2], user_data[1], user_data[3])
         self.set_window()
 
     def set_window(self):
         self.window.title(f'{self.user.login} view')
         user_level = self.get_level()
-        min_points_label = tkinter.Label(self.window, text=f"     {user_level.min_points}   ")
+        min_points_label = tkinter.Label(self.window, text=f"  {user_level.min_points}   ")
         min_points_label.grid(row=0, column=0, pady=10)
         progress = Progressbar(self.window, orient=HORIZONTAL, length=300, mode='determinate')
         progress.grid(row=0, column=1, pady=10)
         progress['value'] = (self.user.points/user_level.max_points)*100
-        max_points_label = tkinter.Label(self.window, text=f"   {user_level.max_points}")
+        max_points_label = tkinter.Label(self.window, text=f"  {user_level.max_points}")
         max_points_label.grid(row=0, column=2, pady=10)
         level_name = tkinter.Label(self.window, text=f'\t{user_level.title}')
         level_name.grid(row=0, column=3, pady=10)
-        welcome_label = tkinter.Label(self.window, text=f'\tWelcome {self.user.login}!')
+        welcome_label = tkinter.Label(self.window, text=f'\tWelcome {self.user.login}!  ')
         welcome_label.grid(row=0, column=4, pady=10)
+        current_points_label = tkinter.Label(self.window, text=f'  Your points: {self.user.points}')
+        current_points_label.grid(row=1, column=0)
         play_button = tkinter.Button(self.window, text='Play', command=self.open_choose_word_set)
         play_button.grid(row=2, column=2)
         if self.user.login != 'Guest':
