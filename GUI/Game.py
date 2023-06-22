@@ -22,6 +22,7 @@ class Game:
         self.mode = mode
         self.wrong_guesses = 0
         self.game_points = 0
+        self.list_of_entries = list()
         self.seconds = 60
         self.user_settings = Database.get_usersettings(self.user.id_User)
         self.window = tkinter.Tk()
@@ -50,24 +51,32 @@ class Game:
                 self.end_game()
             messagebox.showerror("Try Again", "wrong guess")
         else:
-            self.game_points += len(self.words[int(id_entry)].entry)*2
-            word_list = list(self.words[int(id_entry)].entry)
-            password_label = tkinter.Label(canvas, text=f"[ {word_list[self.words[int(id_entry)].key_index]} ]")
-            password_label.config(fg="red")
-            password_label.grid(row=id_entry, column=self.grid_center)
             counter = 0
-            for j in range(self.grid_center - self.words[int(id_entry)].key_index - 1, self.grid_center - 1):
-                label_nor = tkinter.Label(canvas, text=f"[ {word_list[counter]} ]")
-                counter += 1
-                label_nor.grid(row=id_entry, column=j)
-            counter = self.words[int(id_entry)].key_index + 1
-            for j in range(self.grid_center + 1,
-                           self.grid_center + (len(self.words[int(id_entry)].entry) -
-                                               self.words[int(id_entry)].key_index)):
-                label_nor = tkinter.Label(canvas, text=f"[ {word_list[counter]} ]")
-                counter += 1
-                label_nor.grid(row=id_entry, column=j)
-            self.points_label.config(text=f'{self.game_points} points')
+            for idx in self.list_of_entries:
+                if int(id_entry) == idx:
+                    counter += 1
+            if counter > 0:
+                messagebox.showerror("Already done", "You have already guessed that password")
+            else:
+                self.list_of_entries.append(int(id_entry))
+                self.game_points += len(self.words[int(id_entry)].entry)*2
+                word_list = list(self.words[int(id_entry)].entry)
+                password_label = tkinter.Label(canvas, text=f"[ {word_list[self.words[int(id_entry)].key_index]} ]")
+                password_label.config(fg="red")
+                password_label.grid(row=id_entry, column=self.grid_center)
+                counter = 0
+                for j in range(self.grid_center - self.words[int(id_entry)].key_index - 1, self.grid_center - 1):
+                    label_nor = tkinter.Label(canvas, text=f"[ {word_list[counter]} ]")
+                    counter += 1
+                    label_nor.grid(row=id_entry, column=j)
+                counter = self.words[int(id_entry)].key_index + 1
+                for j in range(self.grid_center + 1,
+                               self.grid_center + (len(self.words[int(id_entry)].entry) -
+                                                   self.words[int(id_entry)].key_index)):
+                    label_nor = tkinter.Label(canvas, text=f"[ {word_list[counter]} ]")
+                    counter += 1
+                    label_nor.grid(row=id_entry, column=j)
+                self.points_label.config(text=f'{self.game_points} points')
 
     def configure_window(self):
         self.points_label.pack()
