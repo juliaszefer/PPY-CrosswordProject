@@ -48,6 +48,8 @@ class GameWindow:
             prizes_button.grid(row=4, column=2)
         leaderboard_button = tkinter.Button(self.window, text='Leaderboard', command=open_leaderboard)
         leaderboard_button.grid(row=5, column=2)
+        refresh_button = tkinter.Button(self.window, text='Refresh', command=self.refresh)
+        refresh_button.grid(row=6, column=2)
         log_out_button = tkinter.Button(self.window, text='Log out', command=self.logout)
         log_out_button.grid(row=7, column=2)
         self.window.mainloop()
@@ -56,6 +58,10 @@ class GameWindow:
         data = Database.get_level_by_id(self.user.id_Level)
         level = Level(data[0], data[1], data[2], data[3])
         return level
+
+    def refresh(self):
+        self.window.destroy()
+        GameWindow(self.tmp_user)
 
     def logout(self):
         self.window.destroy()

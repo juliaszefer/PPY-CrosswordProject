@@ -45,7 +45,6 @@ class Game:
 
     def button_check_entry(self, id_entry, value, canvas):
         if self.words[int(id_entry)].entry != value.upper():
-            print(f'{self.words[int(id_entry)].entry} != {value}')
             self.wrong_guesses += 1
             if self.mode == 'first_mistake':
                 self.end_game()

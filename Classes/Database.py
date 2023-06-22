@@ -283,7 +283,7 @@ class Database:
         con, cur = Database.get_connection_and_cursor()
 
         data_dict = {"id_user": id_user, "points": points}
-        cur.execute("UPDATE User SET points = :points WHERE id_User = :id_user", data_dict)
+        cur.execute("UPDATE User SET points = points + :points WHERE id_User = :id_user", data_dict)
         con.commit()
 
         Database.close_connection_and_cursor(con, cur)
