@@ -34,11 +34,6 @@ values (0, 0, 'Create an account.'),
        (5, 500, 'Advance to Master rank.'),
        (6, 1000, 'Advance to Grandmaster rank.');
 
-insert into Prize (id_Prize, description)
-values (7, 'Complete your first crossword.'),
-       (8, 'Make your first crossword.'),
-       (9, 'Complete a crossword without any mistakes.'),
-       (10, 'Complete 10 crosswords.');
 
 insert into User_Prize
 VALUES  (0, 0),
