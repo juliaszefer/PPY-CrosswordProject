@@ -33,7 +33,7 @@ class LogIn:
         # password_salt = bcrypt.hashpw(password, bcrypt.gensalt())[0:29]
         if Database.does_user_exists_by_login(login):
             return "login already exists"
-        password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+        password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$"
         if re.match(password_pattern, password) is None:
             return "wrong password"
         user = User(login, password)

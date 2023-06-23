@@ -2,7 +2,7 @@ import tkinter
 from tkinter import messagebox
 from Classes.LogIn import LogIn
 from GUI.GameWindow import GameWindow
-
+        
 
 class LoginWindow:
 
